@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pravin_portfolio/core/constants/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class EducationSection extends StatelessWidget {
-  const EducationSection({Key? key}) : super(key: key);
+  const EducationSection({super.key});
 
   void _openUrl(String url) async {
     final Uri uri = Uri.parse(url);
@@ -14,13 +16,19 @@ class EducationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.getPadding(context),
+        vertical: isMobile ? 80 : 120,
+      ),
       decoration: BoxDecoration(gradient: AppColors.bgGradient),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
+          constraints: BoxConstraints(
+            maxWidth: Responsive.getMaxWidth(context),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -28,9 +36,9 @@ class EducationSection extends StatelessWidget {
                 "Education & Certifications",
                 style: AppTextStyles.headingXLarge,
               ),
-              const SizedBox(height: 60),
+              SizedBox(height: isMobile ? 40 : 60),
               _DegreeCard(),
-              const SizedBox(height: 60),
+              SizedBox(height: isMobile ? 40 : 60),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -40,34 +48,28 @@ class EducationSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   Wrap(
-                    spacing: 30,
-                    runSpacing: 30,
+                    spacing: isMobile ? 20 : 30,
+                    runSpacing: isMobile ? 20 : 30,
                     children: [
-                      _CertificateCard(
-                        title: "AWS Certified Developer",
-                        subtitle: "Associate Level",
-                        icon: FontAwesomeIcons.aws,
-                        onTap: () {},
-                      ),
+                      // _CertificateCard(
+                      //   title: "AWS Certified Developer",
+                      //   subtitle: "Associate Level",
+                      //   icon: FontAwesomeIcons.aws,
+                      //   onTap: () {},
+                      // ),
                       _CertificateCard(
                         title: "AI Engineer Bootcamp",
                         subtitle: "Udemy | October 2025",
                         icon: FontAwesomeIcons.brain,
-                        link:
-                            "https://www.udemy.com/certificate/UC-4f139446-5ae6-47f0-92b3-a9c9e1b31884/",
-                        onTap: () => _openUrl(
-                          "https://www.udemy.com/certificate/UC-4f139446-5ae6-47f0-92b3-a9c9e1b31884/",
-                        ),
+                        link: MyString.aiEngineeringBootCamp,
+                        onTap: () => _openUrl(MyString.aiEngineeringBootCamp),
                       ),
                       _CertificateCard(
                         title: "Dart & Flutter Mastery",
                         subtitle: "Udemy | November 2023",
                         icon: FontAwesomeIcons.flutter,
-                        link:
-                            "https://www.udemy.com/certificate/UC-4b717eb4-36ae-4d9e-8fc6-f5830d84bce7/",
-                        onTap: () => _openUrl(
-                          "https://www.udemy.com/certificate/UC-4b717eb4-36ae-4d9e-8fc6-f5830d84bce7/",
-                        ),
+                        link: MyString.dartAndFlutterMastery,
+                        onTap: () => _openUrl(MyString.dartAndFlutterMastery),
                       ),
                     ],
                   ),
@@ -107,13 +109,13 @@ class _DegreeCardState extends State<_DegreeCard> {
           boxShadow: _isHovered
               ? [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 16,
                   ),
                 ]
               : [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     blurRadius: 8,
                   ),
                 ],
@@ -141,19 +143,19 @@ class _DegreeCardState extends State<_DegreeCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Bachelor of Technology",
+                    "Bachelor of Engineering",
                     style: AppTextStyles.headingMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "Computer Science",
+                    "Aeronautical Engineering",
                     style: AppTextStyles.bodyXLarge.copyWith(
                       color: AppColors.primary,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "Foundation in software engineering, algorithms, and system design.",
+                    "Aeronautical engineering focus on innovation, precision, and the future of flight, such as Shaping the Future of Aerospace.",
                     style: AppTextStyles.bodyLarge.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -211,13 +213,13 @@ class _CertificateCardState extends State<_CertificateCard> {
             boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: AppColors.secondary.withOpacity(0.3),
+                      color: AppColors.secondary.withValues(alpha: 0.3),
                       blurRadius: 16,
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       blurRadius: 8,
                     ),
                   ],
@@ -229,8 +231,8 @@ class _CertificateCardState extends State<_CertificateCard> {
                 height: 70,
                 decoration: BoxDecoration(
                   color: _isHovered
-                      ? AppColors.secondary.withOpacity(0.2)
-                      : AppColors.secondary.withOpacity(0.1),
+                      ? AppColors.secondary.withValues(alpha: 0.2)
+                      : AppColors.secondary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
@@ -239,7 +241,7 @@ class _CertificateCardState extends State<_CertificateCard> {
                     size: 36,
                     color: _isHovered
                         ? AppColors.secondary
-                        : AppColors.secondary.withOpacity(0.8),
+                        : AppColors.secondary.withValues(alpha: 0.8),
                   ),
                 ),
               ),
@@ -265,7 +267,7 @@ class _CertificateCardState extends State<_CertificateCard> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.secondary.withOpacity(0.15),
+                    color: AppColors.secondary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Row(

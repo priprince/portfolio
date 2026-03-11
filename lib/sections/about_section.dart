@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 90),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.getPadding(context),
+        vertical: isMobile ? 60 : 90,
+      ),
       decoration: BoxDecoration(gradient: AppColors.bgGradient),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: BoxConstraints(
+            maxWidth: Responsive.getMaxWidth(context),
+          ),
           child: Column(
             children: [
               /// HEADER
@@ -28,145 +35,158 @@ class AboutSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              const SizedBox(height: 60),
+              SizedBox(height: isMobile ? 40 : 60),
 
-              /// MAIN CONTENT ROW
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// LEFT SIDE — About Text
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Senior Flutter Developer & Tech Lead",
-                          style: AppTextStyles.headingLarge.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          "Senior Flutter Developer with 5+ years of IT experience building scalable mobile applications across healthcare, fintech, crypto trading platforms, and AI-powered apps. Core competencies include state management, custom animations, and full‑stack integration with Node.js/GraphQL backends.",
-                          style: AppTextStyles.bodyXLarge.copyWith(
-                            height: 1.8,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "I specialize in Flutter architecture, performance optimization, and secure mobile development. I have delivered 15+ production apps and led teams of developers building complex systems. My academic foundation is in Computer Science (B.Tech), and I hold certifications in AWS and Google Flutter development.",
-                          style: AppTextStyles.bodyXLarge.copyWith(
-                            height: 1.8,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 32),
+              /// MAIN CONTENT
+              if (isMobile)
+                Column(
+                  children: [
+                    _buildTextContent(),
+                    const SizedBox(height: 60),
+                    _buildStatsContent(),
+                  ],
+                )
+              else
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// LEFT SIDE — About Text
+                    Expanded(child: _buildTextContent()),
 
-                        /// HIGHLIGHTED SKILLS
-                        Wrap(
-                          spacing: 12,
-                          runSpacing: 12,
-                          children: [
-                            _SkillHighlight(
-                              icon: FontAwesomeIcons.mobile,
-                              label: "Mobile Dev",
-                              color: AppColors.secondary,
-                            ),
-                            _SkillHighlight(
-                              icon: FontAwesomeIcons.cog,
-                              label: "Architecture",
-                              color: AppColors.secondary,
-                            ),
-                            _SkillHighlight(
-                              icon: FontAwesomeIcons.users,
-                              label: "Team Lead",
-                              color: AppColors.secondary,
-                            ),
-                            _SkillHighlight(
-                              icon: FontAwesomeIcons.zap,
-                              label: "Performance",
-                              color: AppColors.secondary,
-                            ),
-                            _SkillHighlight(
-                              icon: FontAwesomeIcons.lock,
-                              label: "Security",
-                              color: AppColors.secondary,
-                            ),
-                            _SkillHighlight(
-                              icon: FontAwesomeIcons.database,
-                              label: "Databases",
-                              color: AppColors.secondary,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                    SizedBox(width: isMobile ? 0 : 80),
 
-                  const SizedBox(width: 80),
-
-                  /// RIGHT SIDE — Stats with Icons
-                  Expanded(
-                    child: Column(
-                      children: [
-                        // Row 1: First box (left) and second box (right)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: _EnhancedStatCard(
-                                icon: FontAwesomeIcons.briefcase,
-                                number: "5+",
-                                label: "Years Experience",
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                            const SizedBox(width: 24),
-                            Expanded(
-                              child: _EnhancedStatCard(
-                                icon: FontAwesomeIcons.mobileScreen,
-                                number: "15+",
-                                label: "Production Apps",
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        // Row 2: Third box (right with offset) and fourth box (left with offset)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: _EnhancedStatCard(
-                                icon: FontAwesomeIcons.award,
-                                number: "3",
-                                label: "Certifications",
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                            const SizedBox(width: 24),
-                            Expanded(
-                              child: _EnhancedStatCard(
-                                icon: FontAwesomeIcons.users,
-                                number: "6",
-                                label: "Developers Led",
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                    /// RIGHT SIDE — Stats with Icons
+                    Expanded(child: _buildStatsContent()),
+                  ],
+                ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Senior Flutter Developer & Tech Lead",
+          style: AppTextStyles.headingLarge.copyWith(
+            color: AppColors.primary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          "Senior Flutter Developer with 5+ years of IT experience building scalable mobile applications across healthcare, fintech, crypto trading platforms, and AI-powered apps. Core competencies include state management, custom animations, and full‑stack integration with Node.js/GraphQL backends.",
+          style: AppTextStyles.bodyXLarge.copyWith(
+            height: 1.8,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          "I specialize in Flutter architecture, performance optimization, and secure mobile development. I have delivered 15+ production apps and led teams of developers building complex systems. My academic foundation is in Computer Science (B.Tech), and I hold certifications in AWS and Google Flutter development.",
+          style: AppTextStyles.bodyXLarge.copyWith(
+            height: 1.8,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        const SizedBox(height: 32),
+
+        /// HIGHLIGHTED SKILLS
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: [
+            _SkillHighlight(
+              icon: FontAwesomeIcons.mobile,
+              label: "Mobile Dev",
+              color: AppColors.secondary,
+            ),
+            _SkillHighlight(
+              icon: FontAwesomeIcons.cog,
+              label: "Architecture",
+              color: AppColors.secondary,
+            ),
+            _SkillHighlight(
+              icon: FontAwesomeIcons.users,
+              label: "Team Lead",
+              color: AppColors.secondary,
+            ),
+            _SkillHighlight(
+              icon: FontAwesomeIcons.zap,
+              label: "Performance",
+              color: AppColors.secondary,
+            ),
+            _SkillHighlight(
+              icon: FontAwesomeIcons.lock,
+              label: "Security",
+              color: AppColors.secondary,
+            ),
+            _SkillHighlight(
+              icon: FontAwesomeIcons.database,
+              label: "Databases",
+              color: AppColors.secondary,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatsContent() {
+    return Column(
+      children: [
+        // Row 1: First box (left) and second box (right)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: _EnhancedStatCard(
+                icon: FontAwesomeIcons.briefcase,
+                number: "5+",
+                label: "Years Experience",
+                color: AppColors.secondary,
+              ),
+            ),
+            const SizedBox(width: 24),
+            Expanded(
+              child: _EnhancedStatCard(
+                icon: FontAwesomeIcons.mobileScreen,
+                number: "15+",
+                label: "Production Apps",
+                color: AppColors.secondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        // Row 2: Third box (right with offset) and fourth box (left with offset)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: _EnhancedStatCard(
+                icon: FontAwesomeIcons.award,
+                number: "3",
+                label: "Certifications",
+                color: AppColors.secondary,
+              ),
+            ),
+            const SizedBox(width: 24),
+            Expanded(
+              child: _EnhancedStatCard(
+                icon: FontAwesomeIcons.users,
+                number: "6",
+                label: "Developers Led",
+                color: AppColors.secondary,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

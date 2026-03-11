@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pravin_portfolio/core/constants/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class ProjectsSection extends StatelessWidget {
   const ProjectsSection({super.key});
@@ -11,31 +13,35 @@ class ProjectsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.getPadding(context),
+        vertical: Responsive.isMobile(context) ? 80 : 120,
+      ),
       decoration: BoxDecoration(gradient: AppColors.bgGradient),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
+          constraints: BoxConstraints(
+            maxWidth: Responsive.getMaxWidth(context),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Featured Projects", style: AppTextStyles.headingXLarge),
-              const SizedBox(height: 80),
+              SizedBox(height: Responsive.isMobile(context) ? 60 : 80),
               const ProjectCard(
                 title: "Nudj Patient App",
                 description:
                     "Healthcare SaaS application enabling patient monitoring, RPM device integration, and real-time health analytics for physicians and care teams.",
                 tech: ["Flutter", "GraphQL", "AWS Cognito", "Hive", "BLoC"],
-                link:
-                    "https://play.google.com/store/apps/details?id=com.vassar.nudj&hl=en",
+                link: MyString.nudjPatientApp,
               ),
               const SizedBox(height: 80),
               const ProjectCard(
-                title: "Fpowrd Music Streaming",
+                title: "Fpowrd Music",
                 description:
-                    "Multi-source music streaming platform integrating Google Drive, Dropbox, and local audio with optimized playback using Rust audio tag processing.",
+                    "Multi-source music platform integrating Google Drive, Dropbox, and local audio with optimized playback using Rust audio tag processing.",
                 tech: ["Flutter", "Riverpod", "Just Audio", "Rust", "Isolates"],
-                link: "", // internal testing currently
+                link: "",
                 reverse: true,
               ),
               const SizedBox(height: 80),
@@ -52,8 +58,7 @@ class ProjectsSection extends StatelessWidget {
                 description:
                     "On‑demand waste management application for customers with geofencing, secure storage, and real‑time tracking.",
                 tech: ["Flutter", "Hive", "GetX"],
-                link:
-                    "https://play.google.com/store/apps/details?id=com.dustman.customermobile",
+                link: MyString.dustmanCustomerApp,
               ),
               const SizedBox(height: 80),
               const ProjectCard(
@@ -61,46 +66,42 @@ class ProjectsSection extends StatelessWidget {
                 description:
                     "Companion app for waste collectors featuring route optimization and offline support.",
                 tech: ["Flutter", "Hive", "GetX"],
-                link:
-                    "https://play.google.com/store/apps/details?id=com.dustman.vendormobile",
+                link: MyString.dustmanVendorApp,
                 reverse: true,
               ),
               const SizedBox(height: 80),
               const ProjectCard(
                 title: "Weconnect",
                 description:
-                    "Social engagement platform with realtime messaging and connectivity features.",
+                    "Effortlessly empower Local Cable Operators with the ability to efficiently oversee their clientele and active subscription services using this intuitive app.",
                 tech: ["Flutter", "GetX", "Isar"],
-                link:
-                    "https://play.google.com/store/apps/details?id=com.unitch.vdigital&hl=en",
+                link: MyString.weConnect,
               ),
               const SizedBox(height: 80),
               const ProjectCard(
                 title: "AmtechPe",
                 description:
-                    "Mobile utility app for payments and services used by clients in India.",
+                    "Unlock the potential for extra income on your terms,with the tools, supports & flexibility you need to achieve your financial goals..",
                 tech: ["Flutter", "GetX"],
-                link:
-                    "https://play.google.com/store/apps/details?id=com.profcyma.absar_solutions",
+                link: MyString.amtechpe,
                 reverse: true,
               ),
               const SizedBox(height: 80),
               const ProjectCard(
                 title: "Gio Exchange",
                 description:
-                    "Cryptocurrency trading companion featuring WebSocket feeds and secure preferences.",
+                    "Cryptocurrency trading companion featuring WebSocket feeds and secure preferences.Our custom trading engine was designed to be scalable and to ensure that orders are executed in real-time.",
                 tech: ["Flutter", "WebSockets", "Shared Preferences"],
-                link:
-                    "https://play.google.com/store/apps/details?id=com.gioexchange.app&hl=en",
+                link: MyString.gioExchange,
               ),
-              const SizedBox(height: 80),
-              const ProjectCard(
-                title: "Crypto Trading Dashboard",
-                description:
-                    "Real-time crypto tracking and trading interface with integrated WebSockets feeds and custom charting, built as part of a trading platform prototype.",
-                tech: ["Flutter", "WebSockets", "REST APIs", "GraphQL"],
-                reverse: true,
-              ),
+              // const SizedBox(height: 80),
+              // const ProjectCard(
+              //   title: "Crypto Trading Dashboard",
+              //   description:
+              //       "Real-time crypto tracking and trading interface with integrated WebSockets feeds and custom charting, built as part of a trading platform prototype.",
+              //   tech: ["Flutter", "WebSockets", "REST APIs", "GraphQL"],
+              //   reverse: true,
+              // ),
             ],
           ),
         ),
@@ -139,26 +140,36 @@ class _ProjectCardState extends State<ProjectCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: Container(
         margin: const EdgeInsets.only(bottom: 0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: widget.reverse
-              ? [
-                  Expanded(flex: 1, child: _projectDetails(context)),
-                  const SizedBox(width: 60),
+        child: isMobile
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   _projectImage(),
-                ]
-              : [
-                  _projectImage(),
-                  const SizedBox(width: 60),
-                  Expanded(flex: 1, child: _projectDetails(context)),
+                  const SizedBox(height: 20),
+                  _projectDetails(context),
                 ],
-        ),
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: widget.reverse
+                    ? [
+                        Expanded(flex: 1, child: _projectDetails(context)),
+                        SizedBox(width: isMobile ? 0 : 60),
+                        _projectImage(),
+                      ]
+                    : [
+                        _projectImage(),
+                        SizedBox(width: isMobile ? 0 : 60),
+                        Expanded(flex: 1, child: _projectDetails(context)),
+                      ],
+              ),
       ),
     );
   }
@@ -281,10 +292,10 @@ class _ProjectCardState extends State<ProjectCard> {
                   ),
                 ),
               ),
-            OutlinedButton(
-              onPressed: () {},
-              child: Text("GitHub", style: AppTextStyles.labelLarge),
-            ),
+            // OutlinedButton(
+            //   onPressed: () {},
+            //   child: Text("GitHub", style: AppTextStyles.labelLarge),
+            // ),
           ],
         ),
       ],
