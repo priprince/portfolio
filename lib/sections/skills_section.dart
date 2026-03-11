@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.getPadding(context),
+        vertical: isMobile ? 80 : 120,
+      ),
       decoration: BoxDecoration(gradient: AppColors.bgGradient),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
+          constraints: BoxConstraints(
+            maxWidth: Responsive.getMaxWidth(context),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -26,10 +33,10 @@ class SkillsSection extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
               ),
-              const SizedBox(height: 60),
+              SizedBox(height: isMobile ? 40 : 60),
               Wrap(
-                spacing: 30,
-                runSpacing: 30,
+                spacing: isMobile ? 20 : 30,
+                runSpacing: isMobile ? 20 : 30,
                 children: const [
                   SkillCategoryCard(
                     title: "Mobile & Cross-Platform",
@@ -105,18 +112,18 @@ class SkillsSection extends StatelessWidget {
                       "Roboflow",
                     ],
                   ),
-                  SkillCategoryCard(
-                    title: "Languages & Tools",
-                    icon: FontAwesomeIcons.code,
-                    color: AppColors.secondary,
-                    skills: [
-                      "Java (Basic)",
-                      "Kotlin (Basic)",
-                      "SwiftUI (Basic)",
-                      "Rust (Audio tags)",
-                      "Knex.js",
-                    ],
-                  ),
+                  // SkillCategoryCard(
+                  //   title: "Languages & Tools",
+                  //   icon: FontAwesomeIcons.code,
+                  //   color: AppColors.secondary,
+                  //   skills: [
+                  //     "Java (Basic)",
+                  //     "Kotlin (Basic)",
+                  //     "SwiftUI (Basic)",
+                  //     "Rust (Audio tags)",
+                  //     "Knex.js",
+                  //   ],
+                  // ),
                 ],
               ),
             ],

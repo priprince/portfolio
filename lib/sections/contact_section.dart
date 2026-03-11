@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pravin_portfolio/core/constants/strings.dart' show MyString;
 import 'package:url_launcher/url_launcher.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class ContactSection extends StatelessWidget {
-  const ContactSection({Key? key}) : super(key: key);
+  const ContactSection({super.key});
 
   void _openUrl(String url) async {
     final Uri uri = Uri.parse(url);
@@ -14,13 +16,19 @@ class ContactSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.getPadding(context),
+        vertical: isMobile ? 80 : 120,
+      ),
       decoration: BoxDecoration(gradient: AppColors.bgGradient),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
+          constraints: BoxConstraints(
+            maxWidth: Responsive.getMaxWidth(context),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -35,17 +43,19 @@ class ContactSection extends StatelessWidget {
                 style: AppTextStyles.bodyXLarge,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(height: isMobile ? 40 : 60),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 16,
+                runSpacing: isMobile ? 12 : 0,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.bgDark,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 18,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 24 : 32,
+                        vertical: isMobile ? 16 : 18,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -54,7 +64,7 @@ class ContactSection extends StatelessWidget {
                       shadowColor: AppColors.primary.withOpacity(0.5),
                     ),
                     onPressed: () {
-                      _openUrl("mailto:pravinflutterboy@gmail.com");
+                      _openUrl(MyString.mailToPravin);
                     },
                     child: Text(
                       "Send Email",
@@ -63,7 +73,6 @@ class ContactSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(
@@ -71,16 +80,16 @@ class ContactSection extends StatelessWidget {
                         width: 2,
                       ),
                       foregroundColor: AppColors.secondary,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 16,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 24 : 32,
+                        vertical: isMobile ? 14 : 16,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     onPressed: () {
-                      _openUrl("https://linkedin.com/in/pravin");
+                      _openUrl(MyString.linkedIn);
                     },
                     child: Text(
                       "Connect on LinkedIn",
@@ -89,35 +98,36 @@ class ContactSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 80),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(height: isMobile ? 60 : 80),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: isMobile ? 20 : 40,
+                runSpacing: isMobile ? 20 : 0,
                 children: [
                   _ContactIconButton(
                     icon: FontAwesomeIcons.github,
                     label: "GitHub",
-                    onPressed: () => _openUrl("https://github.com/priprince"),
+                    onPressed: () => _openUrl(MyString.priprinceGit),
                   ),
                   const SizedBox(width: 40),
                   _ContactIconButton(
                     icon: FontAwesomeIcons.linkedin,
                     label: "LinkedIn",
-                    onPressed: () => _openUrl("https://linkedin.com/in/pravin"),
+                    onPressed: () => _openUrl(MyString.linkedIn),
                   ),
                   const SizedBox(width: 40),
                   _ContactIconButton(
                     icon: FontAwesomeIcons.envelope,
                     label: "Email",
-                    onPressed: () =>
-                        _openUrl("mailto:pravinflutterboy@gmail.com"),
+                    onPressed: () => _openUrl(MyString.mailToPravin),
                   ),
-                  const SizedBox(width: 40),
-                  _ContactIconButton(
-                    icon: FontAwesomeIcons.twitter,
-                    label: "Twitter",
-                    onPressed: () =>
-                        _openUrl("https://twitter.com/pravinflutter"),
-                  ),
+                  // const SizedBox(width: 40),
+                  // _ContactIconButton(
+                  //   icon: FontAwesomeIcons.twitter,
+                  //   label: "Twitter",
+                  //   onPressed: () =>
+                  //       _openUrl("https://twitter.com/pravinflutter"),
+                  // ),
                 ],
               ),
               const SizedBox(height: 60),

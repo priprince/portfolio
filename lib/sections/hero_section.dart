@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pravin_portfolio/core/constants/strings.dart' show MyString;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection(this.anotherKey, this.fun, {super.key});
@@ -23,11 +25,15 @@ class HeroSection extends StatelessWidget {
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(
+            horizontal: Responsive.getPadding(context),
+          ),
           decoration: BoxDecoration(gradient: AppColors.bgGradient),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 900),
+              constraints: BoxConstraints(
+                maxWidth: Responsive.getMaxWidth(context),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -48,8 +54,6 @@ class HeroSection extends StatelessWidget {
                     child: Text("Pravin D", style: AppTextStyles.displayXLarge),
                   ).animate().fadeIn(delay: 200.ms),
                   const SizedBox(height: 16),
-
-                  /// Title
                   Text(
                     "Senior Flutter Developer • Full-Stack Mobile Engineer",
                     textAlign: TextAlign.center,
@@ -59,10 +63,7 @@ class HeroSection extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ).animate().fadeIn(delay: 400.ms),
-
                   const SizedBox(height: 20),
-
-                  /// Tagline
                   Text(
                     "Building scalable cross-platform mobile apps across healthcare, fintech, crypto and AI platforms.",
                     textAlign: TextAlign.center,
@@ -74,57 +75,66 @@ class HeroSection extends StatelessWidget {
                   const SizedBox(height: 40),
 
                   /// Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.bgDark,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 18,
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isMobile = Responsive.isMobile(context);
+                      return Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 16,
+                        runSpacing: isMobile ? 12 : 0,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: AppColors.bgDark,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isMobile ? 24 : 32,
+                                vertical: isMobile ? 16 : 18,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 8,
+                              shadowColor: AppColors.primary.withValues(
+                                alpha: 0.5,
+                              ),
+                            ),
+                            onPressed: () {
+                              fun(anotherKey);
+                            },
+                            child: Text(
+                              "View Projects",
+                              style: AppTextStyles.labelLarge.copyWith(
+                                color: AppColors.bgDark,
+                              ),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                color: AppColors.primary,
+                                width: 2,
+                              ),
+                              foregroundColor: AppColors.primary,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isMobile ? 24 : 32,
+                                vertical: isMobile ? 14 : 16,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {
+                              _openUrl(MyString.priprinceGit);
+                            },
+                            child: Text(
+                              "GitHub",
+                              style: AppTextStyles.labelLarge,
+                            ),
                           ),
-                          elevation: 8,
-                          shadowColor: AppColors.primary.withValues(alpha: 0.5),
-                        ),
-                        onPressed: () {
-                          fun(anotherKey);
-                        },
-                        child: Text(
-                          "View Projects",
-                          style: AppTextStyles.labelLarge.copyWith(
-                            color: AppColors.bgDark,
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 16),
-
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: AppColors.primary,
-                            width: 2,
-                          ),
-                          foregroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          _openUrl("https://github.com/priprince");
-                        },
-                        child: Text("GitHub", style: AppTextStyles.labelLarge),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   ).animate().fadeIn(delay: 800.ms),
 
                   const SizedBox(height: 40),
@@ -135,19 +145,15 @@ class HeroSection extends StatelessWidget {
                     children: [
                       _SocialIconButton(
                         icon: FontAwesomeIcons.github,
-                        onPressed: () =>
-                            _openUrl("https://github.com/priprince"),
+                        onPressed: () => _openUrl(MyString.priprinceGit),
                       ).animate().fadeIn(delay: 900.ms),
                       _SocialIconButton(
                         icon: FontAwesomeIcons.linkedin,
-                        onPressed: () => _openUrl(
-                          "https://www.linkedin.com/in/pravin-prince-a2826b254/",
-                        ),
+                        onPressed: () => _openUrl(MyString.linkedIn),
                       ).animate().fadeIn(delay: 1000.ms),
                       _SocialIconButton(
                         icon: FontAwesomeIcons.envelope,
-                        onPressed: () =>
-                            _openUrl("mailto:pravinflutterboy@gmail.com"),
+                        onPressed: () => _openUrl(MyString.mailToPravin),
                       ).animate().fadeIn(delay: 1100.ms),
                     ],
                   ),

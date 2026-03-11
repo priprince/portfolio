@@ -1,4 +1,6 @@
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:pravin_portfolio/core/constants/strings.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -97,18 +99,20 @@ class Navbar extends StatelessWidget {
           Spacer(),
           Row(
             children: [
-              TextButton(
-                onPressed: () => _openUrl("https://github.com/priprince"),
-                child: Text(
-                  "GitHub",
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
+              // TextButton(
+              //   onPressed: () => _openUrl("https://github.com/priprince"),
+              //   child: Text(
+              //     "GitHub",
+              //     style: AppTextStyles.labelLarge.copyWith(
+              //       color: AppColors.textSecondary,
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(width: 16),
               ElevatedButton(
-                onPressed: () => _openUrl("https://linkedin.com/in/pravin"),
+                onPressed: () {
+                  html.window.open(MyString.pravinResume, '_blank');
+                },
                 child: Text(
                   "Resume",
                   style: AppTextStyles.labelLarge.copyWith(

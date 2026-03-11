@@ -1,46 +1,53 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
+import '../core/utils/responsive.dart';
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.getPadding(context),
+        vertical: isMobile ? 80 : 120,
+      ),
       decoration: BoxDecoration(gradient: AppColors.bgGradient),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
+          constraints: BoxConstraints(
+            maxWidth: Responsive.getMaxWidth(context),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Work Experience", style: AppTextStyles.headingXLarge),
-              const SizedBox(height: 60),
+              SizedBox(height: isMobile ? 40 : 60),
               const ExperienceCard(
                 position: "Senior Flutter Engineer",
                 company: "Honerise Digital",
                 duration: "2022 ‑ Present",
                 description:
-                    "Architecting cross‑platform mobile solutions with Flutter 3+ and leading a distributed team. Collaborate closely with backend and ML engineers to integrate GraphQL APIs, AWS Lambda, and AI features while mentoring junior developers and enforcing code quality standards.",
+                    "Architecting cross‑platform mobile solutions with Flutter 3+ and leading a distributed team. Collaborate closely with backend and ML engineers to integrate GraphQL APIs, AWS Lambda, and AI features.Developed HIPAA‑compliant healthcare apps featuring RPM device support and complex data visualizations, optimized for performance on low‑end devices and integrated with third‑party analytics, while mentoring junior developers and enforcing code quality standards.",
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: isMobile ? 30 : 40),
               const ExperienceCard(
                 position: "Lead Mobile Developer",
                 company: "Fire Bee Techno Services",
                 duration: "2022 ‑ 2022",
                 description:
-                    "Spearheaded the redevelopment of a flagship fintech app using Flutter, implementing secure authentication with Cognito, real‑time data using WebSockets, and a modular architecture that served 100K+ users.",
+                    "Spearheaded the redevelopment of a flagship fintech app using Flutter, implementing secure authentication with Cognito, real‑time data using WebSockets, and a modular architecture that served 1000+ users.",
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: isMobile ? 30 : 40),
               const ExperienceCard(
                 position: "Flutter Developer",
                 company: "Cviac",
                 duration: "2020 ‑ 2021",
                 description:
-                    "Developed HIPAA‑compliant healthcare apps featuring RPM device support and complex data visualizations, optimized for performance on low‑end devices and integrated with third‑party analytics.",
+                    "Built production Flutter apps across fintech, waste management, and digital services.Integrated REST APIs, Firebase services, and Node.js backends.Migrated state management to Getx",
               ),
             ],
           ),

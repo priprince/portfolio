@@ -9,12 +9,12 @@ class CustomButton extends StatefulWidget {
   final bool isLoading;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.type = ButtonType.primary,
     this.isLoading = false,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomButton> createState() => _CustomButtonState();

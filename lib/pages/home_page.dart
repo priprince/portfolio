@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pravin_portfolio/widgets/navbar.dart';
 import '../core/theme/app_colors.dart';
+import '../core/utils/responsive.dart';
 import '../sections/hero_section.dart';
+import '../sections/about_section.dart';
+import '../sections/skills_section.dart';
+import '../sections/experience_section.dart';
 import '../sections/about_section.dart';
 import '../sections/skills_section.dart';
 import '../sections/projects_section.dart';
@@ -41,6 +45,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
+    final sectionSpacing = isMobile ? 60.0 : 90.0;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(gradient: AppColors.bgGradient),
@@ -51,22 +57,22 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   HeroSection(projectsKey, scrollToSection, key: heroKey),
-                  const SizedBox(height: 90),
+                  SizedBox(height: sectionSpacing),
                   Divider(color: AppColors.bgLight, height: 1),
                   AboutSection(key: aboutKey),
-                  const SizedBox(height: 90),
+                  SizedBox(height: sectionSpacing),
                   Divider(color: AppColors.bgLight, height: 1),
                   SkillsSection(key: skillsKey),
-                  const SizedBox(height: 90),
+                  SizedBox(height: sectionSpacing),
                   Divider(color: AppColors.bgLight, height: 1),
                   ProjectsSection(key: projectsKey),
-                  const SizedBox(height: 90),
+                  SizedBox(height: sectionSpacing),
                   Divider(color: AppColors.bgLight, height: 1),
                   ExperienceSection(key: experienceKey),
-                  const SizedBox(height: 90),
+                  SizedBox(height: sectionSpacing),
                   Divider(color: AppColors.bgLight, height: 1),
                   EducationSection(key: educationKey),
-                  const SizedBox(height: 90),
+                  SizedBox(height: sectionSpacing),
                   Divider(color: AppColors.bgLight, height: 1),
                   ContactSection(key: contactKey),
                 ],
