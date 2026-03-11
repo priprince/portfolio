@@ -111,7 +111,11 @@ class Navbar extends StatelessWidget {
               // const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: () {
-                  html.window.open(MyString.pravinResume, '_blank');
+                  // html.window.open(MyString.pravinResume, '_blank');
+                  final url = Uri.base
+                      .resolve(MyString.pravinResume)
+                      .toString();
+                  html.window.open(url, '_blank');
                 },
                 child: Text(
                   "Resume",
