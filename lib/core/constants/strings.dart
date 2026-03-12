@@ -4,7 +4,7 @@ class MyString {
   static const String priprinceGit = "https://github.com/priprince";
   static const String mailToPravin = "mailto:pravinflutterboy@gmail.com";
   static const String pravinResume =
-      "assets/resume/Pravin_Senior_Flutter_Developer.pdf";
+      "https://priprince.github.io/portfolio/assets/assets/resume/Pravin_Senior_Flutter_Developer.pdf";
   static const String nudjPatientApp =
       "https://play.google.com/store/apps/details?id=com.vassar.nudj&hl=en";
   static const String dustmanCustomerApp =

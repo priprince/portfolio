@@ -1,3 +1,4 @@
+// ignore: avoid_web_libraries_in_flutter, deprecated_member_use
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:pravin_portfolio/core/constants/strings.dart';
@@ -28,10 +29,10 @@ class Navbar extends StatelessWidget {
     required this.contactKey,
   });
 
-  void _openUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-    await launchUrl(uri);
-  }
+  // void _openUrl(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   await launchUrl(uri);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +61,10 @@ class Navbar extends StatelessWidget {
               style: AppTextStyles.headingSmall.copyWith(letterSpacing: 2),
             ),
           ),
-          Spacer(),
+          Spacer(flex: 3),
+          const SizedBox(width: 16),
           Expanded(
+            flex: 4,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -96,7 +99,7 @@ class Navbar extends StatelessWidget {
               ),
             ),
           ),
-          Spacer(),
+          Spacer(flex: 2),
           Row(
             children: [
               // TextButton(
@@ -110,20 +113,52 @@ class Navbar extends StatelessWidget {
               // ),
               // const SizedBox(width: 16),
               ElevatedButton(
-                onPressed: () {
-                  // html.window.open(MyString.pravinResume, '_blank');
-                  final url = Uri.base
-                      .resolve(MyString.pravinResume)
-                      .toString();
-                  html.window.open(url, '_blank');
+                onPressed: () async {
+                  final Uri url = Uri.parse(MyString.pravinResume);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
                 },
                 child: Text(
-                  "Resume",
-                  style: AppTextStyles.labelLarge.copyWith(
+                  "View Resume",
+                  style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.bgDark,
                   ),
                 ),
               ),
+              // const SizedBox(width: 16),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     const url = MyString.pravinResume;
+
+              //     // final anchor = html.AnchorElement(href: url)
+              //     //   ..setAttribute(
+              //     //     "download",
+              //     //     "Pravin_Senior_Flutter_Developer.pdf",
+              //     //   )
+              //     //   ..click();
+              //     // final anchor = html.AnchorElement(href: url)
+              //     //   ..download = "Pravin_Senior_Flutter_Developer.pdf"
+              //     //   ..style.display = "none";
+
+              //     // html.document.body!.children.add(anchor);
+              //     // anchor.click();
+              //     // anchor.remove();
+
+              //     final anchor = html.AnchorElement(href: url)
+              //       ..target =
+              //           "_blank" // prevents current page replacement
+              //       ..download = "Pravin_Senior_Flutter_Developer.pdf";
+
+              //     anchor.click();
+              //   },
+              //   child: Text(
+              //     "Download Resume",
+              //     style: AppTextStyles.labelMedium.copyWith(
+              //       color: AppColors.bgDark,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ],
